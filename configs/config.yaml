@@ -1,0 +1,31 @@
+server:
+  host: "0.0.0.0"
+  port: 8080
+  graceful_timeout: 15s
+
+discovery:
+  type: "consul"  # или "static", "etcd"
+  consul:
+    address: "127.0.0.1:8500"
+    prefix: "services"
+  static:
+    services:
+      - name: "users"
+        host: "users.local"
+        target: "http://localhost:3001"
+      - name: "orders"
+        host: "orders.local"
+        target: "http://localhost:3002"
+
+security:
+  jwt:
+    enabled: true
+    secret: "your_jwt_secret_key_here"
+    token_header: "Authorization"
+  cors:
+    enabled: true
+    allowed_origins:
+      - "*"
+  rate_limit:
+    enabled: true
+    requests_per_second: 100

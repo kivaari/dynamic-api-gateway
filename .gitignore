@@ -1,0 +1,8 @@
+/bin/
+*.log
+*.out
+.env
+*.swp
+*.swo
+.vscode/
+.idea/
