@@ -2,12 +2,10 @@ package middleware
 
 import "github.com/gin-gonic/gin"
 
-// CORSMiddleware — включает CORS заголовки для разрешённых доменов
 func CORSMiddleware(allowedOrigins []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.Request.Header.Get("Origin")
 
-		// Проверяем, разрешён ли origin
 		if isOriginAllowed(origin, allowedOrigins) {
 			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
 		} else if len(allowedOrigins) == 1 && allowedOrigins[0] == "*" {
@@ -27,7 +25,6 @@ func CORSMiddleware(allowedOrigins []string) gin.HandlerFunc {
 	}
 }
 
-// isOriginAllowed — проверяет, есть ли origin в списке разрешённых
 func isOriginAllowed(origin string, allowed []string) bool {
 	for _, allowedOrigin := range allowed {
 		if allowedOrigin == "*" || allowedOrigin == origin {

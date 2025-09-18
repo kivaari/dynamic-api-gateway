@@ -3,7 +3,6 @@ package gateway
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/kivaari/dynamic-api-gateway/internal/config"
-	"github.com/kivaari/dynamic-api-gateway/internal/gateway"
 	"github.com/kivaari/dynamic-api-gateway/internal/gateway/middleware"
 	"github.com/kivaari/dynamic-api-gateway/internal/logger"
 )
@@ -11,7 +10,6 @@ import (
 func NewRouter(cfg *config.Config) *gin.Engine {
 	r := gin.Default()
 
-	// Подключаем middleware
 	if cfg.Security.CORS.Enabled {
 		r.Use(middleware.CORSMiddleware(cfg.Security.CORS.AllowedOrigins))
 	}
@@ -41,6 +39,6 @@ func setupStaticRoutes(r *gin.Engine, cfg *config.Config) {
 
 func proxyHandler(targetURL string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		gateway.ProxyRequest(c, targetURL)
+		ProxyRequest(c, targetURL)
 	}
 }

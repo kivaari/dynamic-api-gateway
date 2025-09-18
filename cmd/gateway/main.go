@@ -2,7 +2,11 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"strconv"
 	"time"
+
+	"github.com/joho/godotenv"
 
 	"github.com/kivaari/dynamic-api-gateway/internal/config"
 	"github.com/kivaari/dynamic-api-gateway/internal/gateway"
@@ -11,6 +15,10 @@ import (
 )
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		logger.Log.Warn("Не удалось загрузить .env файл, используем значения по умолчанию")
+	}
+
 	logger.Init()
 
 	cfg, err := config.LoadConfig("./configs")
@@ -18,10 +26,14 @@ func main() {
 		logger.Log.Fatalf("Failed to load config: %v", err)
 	}
 
+	if jwtSecret := os.Getenv("JWT_SECRET"); jwtSecret != "" {
+		cfg.Security.JWT.Secret = jwtSecret
+	}
+
 	router := gateway.NewRouter(cfg)
 
 	srv := &http.Server{
-		Addr:    cfg.Server.Host + ":" + string(cfg.Server.Port),
+		Addr:    cfg.Server.Host + ":" + strconv.Itoa(cfg.Server.Port),
 		Handler: router,
 	}
 

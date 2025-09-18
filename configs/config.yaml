@@ -20,7 +20,7 @@ discovery:
 security:
   jwt:
     enabled: true
-    secret: "your_jwt_secret_key_here"
+    secret: "create_.env_file_and_paste_secret_into__JWT_SECRET__variable"
     token_header: "Authorization"
   cors:
     enabled: true
